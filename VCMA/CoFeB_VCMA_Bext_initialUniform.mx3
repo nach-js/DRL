@@ -7,40 +7,37 @@ alpha = 0.02
 anisU = vector(0, 0, 1)
 Dind  = 0.06e-3
 
-B_ext = vector(0, 0, -0.08)   // 800 Oe along +z
+B_ext = vector(0, 0, 0.08)   // fixed field, +z
 
 TableAdd(Ku1)
 TableAdd(m)
 TableAdd(MaxTorque)
 
-// ── Find the true V=0 "not flipped" state ──────────────────
-// Start random, relax under the field at the strongest PMA.
-// Whatever this settles into is your real starting condition,
-// not an assumed one.
+// ── Verified starting state ──────────────────────
 Ku1 = 0.73e6
 m = uniform(0, 0, -1)
-Print("mz = ", m.average(), "  MaxTorque = ", MaxTorque.Get())
-Save(m)
+Relax()
+Print("Confirmed start: mz = ", m.average(), "  MaxTorque = ", MaxTorque.Get())
 
-// ── Sweep Ku1 upward then back downward (hysteresis) ──
-N        := 40
-Ku1_lo    := 0.5e6
-Ku1_hi    := 0.73e6
-dKu1      := (Ku1_hi - Ku1_lo) / (N - 1)
+N         := 40
+Ku1_start := 0.73e6
+Ku1_end   := 0.5e6
+dKu1      := (Ku1_end - Ku1_start) / (N - 1)
 
-Ntotal := 2*N - 1
-
-for i := 0; i < Ntotal; i++ {
-    if i < N {
-        Ku1 = Ku1_lo + i*dKu1
-    } else {
-        j := i - (N - 1)
-        Ku1 = Ku1_hi - j*dKu1
-    }
-
+// ── FORWARD: decrease Ku1 (≈ ramp voltage up) ────────────────
+for i := 0; i < N; i++ {
+    Ku1 = Ku1_start + i*dKu1
     Relax()
     TableSave()
-    SaveAs(m, sprintf("m_%03d", i))
+    SaveAs(m, sprintf("fwd_%03d", i))
+    Print("FWD step=", i, " Ku1=", Ku1, " mz=", m.average())
+}
 
-    Print("step=", i, " Ku1=", Ku1, " mz=", m.average()[2])
+// ── BACKWARD: increase Ku1 back up (≈ ramp voltage down) ─────
+for i := 0; i < N; i++ {
+    Ku1 = Ku1_end - i*dKu1
+    Relax()
+    TableSave()
+    SaveAs(m, sprintf("bwd_%03d", i))
+    Print("BWD step=", i, " Ku1=", Ku1, " mz=", m.average())
 }

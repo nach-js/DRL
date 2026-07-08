@@ -1,0 +1,39 @@
+SetGridsize(64, 64, 1)
+SetCellsize(3e-9, 3e-9, 1.5e-9)
+
+Msat  = 1.0e6
+Aex   = 15e-12
+alpha = 0.02
+anisU = vector(0, 0, 1)
+Dind  = 0.06e-3
+
+B_ext = vector(0, 0, 0.08)   // 800 Oe along +z
+
+TableAdd(Ku1)
+TableAdd(m)
+TableAdd(MaxTorque)
+
+// ── Find the true V=0 "not flipped" state ──────────────────
+// Start random, relax under the field at the strongest PMA.
+// Whatever this settles into is your real starting condition,
+// not an assumed one.
+Ku1 = 0.73e6
+m = uniform(0, 0, -1)
+Relax()
+Print("mz = ", m.average(), "  MaxTorque = ", MaxTorque.Get())
+Save(m)
+
+// ── Sweep Ku1 downward (≈ ramping gate voltage) ─────────────
+N        := 40
+Ku1_start := 0.73e6
+Ku1_end   := 0.5e6
+dKu1      := (Ku1_end - Ku1_start) / (N - 1)
+
+for i := 0; i < N; i++ {
+    Ku1 = Ku1_start + i*dKu1
+    Relax()
+    TableSave()
+    SaveAs(m, sprintf("m_%03d", i))
+
+    Print("step=", i, " Ku1=", Ku1, " mz=", m.average())
+}

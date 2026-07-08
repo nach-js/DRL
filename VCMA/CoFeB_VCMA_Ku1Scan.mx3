@@ -45,7 +45,7 @@ RelaxTorqueThreshold = 1e-5
 // differences are purely due to Ku1, not different random seeds.
 Print("=== Initializing maze domain state ===")
 Ku1 = 0.68e6
-m = RandomMag()
+m =  uniform(0, 0, -1)
 Relax()
 Print("Init MaxTorque = ", MaxTorque.Get())
 Print("Init <m>       = ", m.Average())

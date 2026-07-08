@@ -1,0 +1,47 @@
+SetGridsize(64, 64, 1)
+SetCellsize(3e-9, 3e-9, 1.5e-9)
+
+Msat  = 1.0e6
+Aex   = 15e-12
+alpha = 0.02
+anisU = vector(0, 0, 1)
+Dind  = 0.06e-3
+
+B_ext = vector(0, 0, 0.08)   // 800 Oe along +z
+
+TableAdd(Ku1)
+TableAdd(m)
+TableAdd(MaxTorque)
+
+// ── Find the true V=0 "not flipped" state ──────────────────
+// Start random, relax under the field at the strongest PMA.
+// Whatever this settles into is your real starting condition,
+// not an assumed one.
+Ku1 = 0.73e6S
+m = RandomMag()
+Relax()
+Print("mz = ", m.average(), "  MaxTorque = ", MaxTorque.Get())
+Save(m)
+
+// ── Sweep Ku1 upward then back downward (hysteresis) ──
+N        := 40
+Ku1_lo    := 0.5e6
+Ku1_hi    := 0.73e6
+dKu1      := (Ku1_hi - Ku1_lo) / (N - 1)
+
+Ntotal := 2*N - 1
+
+for i := 0; i < Ntotal; i++ {
+    if i < N {
+        Ku1 = Ku1_lo + i*dKu1
+    } else {
+        j := i - (N - 1)
+        Ku1 = Ku1_hi - j*dKu1
+    }
+
+    Relax()
+    TableSave()
+    SaveAs(m, sprintf("m_%03d", i))
+
+    Print("step=", i, " Ku1=", Ku1, " mz=", m.average()[2])
+}

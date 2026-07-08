@@ -7,7 +7,7 @@ alpha = 0.02
 anisU = vector(0, 0, 1)
 Dind  = 0.06e-3
 
-B_ext = vector(0, 0, 0.08)   // 800 Oe along +z
+B_ext = vector(0, 0, -0.08)   // 800 Oe along +z
 
 TableAdd(Ku1)
 TableAdd(m)

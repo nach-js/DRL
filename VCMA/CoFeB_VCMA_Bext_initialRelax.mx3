@@ -17,7 +17,7 @@ TableAdd(MaxTorque)
 // Start random, relax under the field at the strongest PMA.
 // Whatever this settles into is your real starting condition,
 // not an assumed one.
-Ku1 = 0.73e6S
+Ku1 = 0.73e6
 m = RandomMag()
 Relax()
 Print("mz = ", m.average(), "  MaxTorque = ", MaxTorque.Get())

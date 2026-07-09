@@ -1,2 +1,37 @@
-// script to determine the coercivity of a CoFeB sample as a function of applied voltage
+// Script to probe magnetization dynamics of CoFeB with VCMA effect
+// under different external magnetic fields and anisotropy constants
 
+// Define the grid parameters
+SetGridSize(128, 128, 1)
+SetCellSize(3e-9, 3e-9, 1.5e-9)
+
+// Define material parameters
+Msat  = 1.0e6
+Aex   = 15e-12
+alpha = 0.02
+anisU = vector(0, 0, 1)
+Dind  = 0.06e-3
+
+// register Ku1 and B_ext as table columns so table.txt actually logs them
+TableAdd(Ku1)
+TableAdd(B_ext)
+
+// step size for the anisotropy constant Ku1 (5 steps from 0.73e6 down to 0.5e6)
+N := (0.73e6 - 0.5e6)/4
+
+for i := 0; i < 5; i++ {
+
+    Ku1 = 0.73e6 - i*N
+    B_ext = vector(0, 0, 0)   // reset field so each Ku1 step relaxes from the same zero-field state
+    Relax()
+
+    for j := 0; j < 10; j++ {
+        Bz := 0.001 + j*0.0002
+        B_ext = vector(0, 0, Bz)
+        Minimize()
+        TableSave()
+        SaveAs(m, sprintf("Ku1_%03d_B_%03d", i, j))
+        Print("Ku1=", Ku1, " B=", Bz, " mz=", m.average())
+    }
+
+}

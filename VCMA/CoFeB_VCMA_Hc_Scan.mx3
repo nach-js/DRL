@@ -9,7 +9,7 @@ SetCellSize(3e-9, 3e-9, 1.5e-9)
 Msat  = 1.0e6
 Aex   = 15e-12
 alpha = 0.02
-anisU = vector(0, 0, 1)
+anisU = vector(0, 0, -1)
 Dind  = 0.06e-3
 
 // register Ku1 and B_ext as table columns so table.txt actually logs them
@@ -21,6 +21,7 @@ N := (0.73e6 - 0.5e6)/4
 
 for i := 0; i < 5; i++ {
 
+    print("Step ", i, " of 5: Ku1 = ", 0.73e6 - i*N)
     Ku1 = 0.73e6 - i*N
     B_ext = vector(0, 0, 0)   // reset field so each Ku1 step relaxes from the same zero-field state
     Relax()
@@ -28,10 +29,10 @@ for i := 0; i < 5; i++ {
     for j := 0; j < 10; j++ {
         Bz := 0.001 + j*0.0002
         B_ext = vector(0, 0, Bz)
-        Minimize()
+        Minimize() 
         TableSave()
         SaveAs(m, sprintf("Ku1_%03d_B_%03d", i, j))
-        Print("Ku1=", Ku1, " B=", Bz, " mz=", m.average())
+        print("Ku1=", Ku1, " B=", Bz, " mz=", m.comp(2).average()
     }
 
 }

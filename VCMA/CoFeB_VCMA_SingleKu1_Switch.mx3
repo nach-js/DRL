@@ -1,0 +1,63 @@
+// testing a single field sweep for switching behavior of CoFeB
+// full hysteresis loop: -1T -> +1T -> -1T
+
+// ── GRID ─────────────────────────────────────────────────────
+Nx := 64
+Ny := 64
+Nz := 1
+
+SetGridsize(Nx, Ny, Nz)
+SetCellsize(3e-9, 3e-9, 1.5e-9)
+// No SetGeom — full volume needed for correct B_demag across stack
+
+
+// ── MATERIAL PARAMETERS ──────────────────────────────────────
+Msat  = 1.0e6
+Aex   = 15e-12
+alpha = 1
+anisU = vector(0, 0, 1)
+Dind  = 0.06e-3
+// Ku1 set below in initialization and loop
+Ku1start := 0.73e6
+Ku1end   := 0.6e6
+Nku1 := 10
+
+
+// ── INITIAL STATE ─────────────────────────────────────────────
+m = uniform(0, 0, -1)   // start saturated along -z to match the
+                         // sweep starting at B_ext = -1 T
+
+// ── TABLE COLUMNS: B_ext (adds Bx,By,Bz) ───────────────────────
+TableAdd(B_ext)
+TableAdd(Ku1)
+// mx,my,mz are already logged by default alongside t
+
+// ── FIELD SWEEP: -1T -> +1T -> -1T (full hysteresis loop) ──────
+Nsteps := 100
+Bstart := -0.5
+Bend   := 0.5
+dB     := (Bend - Bstart) / Nsteps
+
+for j := 0; j < Nku1; j++ {
+    Ku1 = Ku1start + j*(Ku1end - Ku1start)/(Nku1-1)
+    Print("=== Step ", j, " of ", Nku1, ": Ku1 = ", Ku1, " ===")
+
+    // forward branch: -1 T -> +1 T
+    for i := 0; i <= Nsteps; i++ {
+        Bz := Bstart + i*dB
+        B_ext = vector(0, 0, Bz)
+        Relax()
+        TableSave()
+        print("branch=up   B_ext = ", Bz, "  mz = ", m.comp(2).average())
+    }
+
+    // backward branch: +1 T -> -1 T (skip i=0, already saved as the last
+    // forward point, to avoid duplicating B_ext = +1 T in the table)
+    for i := 1; i <= Nsteps; i++ {
+        Bz := Bend - i*dB
+        B_ext = vector(0, 0, Bz)
+        Relax()
+        TableSave()
+        print("branch=down B_ext = ", Bz, "  mz = ", m.comp(2).average())
+    }
+}

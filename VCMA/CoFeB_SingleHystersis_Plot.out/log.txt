@@ -1,0 +1,251 @@
+//mumax 3.12 [windows_amd64 go1.26.0(gc) CUDA-12.9]
+//commit hash: 6e5c98bb
+//CPU info: Unknown, Error: exec: "wmic": executable file not found in %PATH%
+//GPU info: NVIDIA GeForce RTX 5070 Ti(16302MB), CUDA Driver 13.1, cc=12.0, using cc=120 PTX
+//OS  info: Windows OS, Hostname: nachjs-pc1
+//Timestamp: 2026-07-13 14:49:29
+//(c) Arne Vansteenkiste, Dynamat LAB, Ghent University, Belgium
+//This is free software without any warranty. See license.txt
+//********************************************************************//
+//  If you use mumax in any work or publication,                      //
+//  we kindly ask you to cite the references in references.bib        //
+//********************************************************************//
+//output directory: CoFeB_SingleHystersis_Plot.out/
+Nx := 128
+Ny := 128
+Nz := 1
+SetGridsize(Nx, Ny, Nz)
+SetCellsize(3e-9, 3e-9, 1.5e-9)
+Msat = 1.15e6
+Aex = 15e-12
+alpha = 1
+anisU = vector(0, 0, 1)
+Dind = 0.06e-3
+Ku1 = 0.73e6
+m = uniform(0, 0, -1)
+TableAdd(B_ext)
+Nsteps := 100
+Bstart := -0.5
+Bend := 0.5
+dB := (Bend - Bstart) / Nsteps
+for i := 0; i <= Nsteps; i++ {
+	Bz := Bstart + i*dB
+	B_ext = vector(0, 0, Bz)
+	Relax()
+	TableSave()
+	print("branch=up   B_ext(Oe) = ", Bz*1e4, "  mz = ", m.comp(2).average())
+}
+//branch=up   B_ext(Oe) =  -5000   mz =  -0.9999974370002747
+//branch=up   B_ext(Oe) =  -4900   mz =  -0.9999973773956299
+//branch=up   B_ext(Oe) =  -4800   mz =  -0.9999973773956299
+//branch=up   B_ext(Oe) =  -4700   mz =  -0.9999972581863403
+//branch=up   B_ext(Oe) =  -4600   mz =  -0.9999971389770508
+//branch=up   B_ext(Oe) =  -4500   mz =  -0.9999971389770508
+//branch=up   B_ext(Oe) =  -4400   mz =  -0.9999970197677612
+//branch=up   B_ext(Oe) =  -4300   mz =  -0.9999969601631165
+//branch=up   B_ext(Oe) =  -4200   mz =  -0.9999967813491821
+//branch=up   B_ext(Oe) =  -4100   mz =  -0.9999966025352478
+//branch=up   B_ext(Oe) =  -4000   mz =  -0.9999964833259583
+//branch=up   B_ext(Oe) =  -3900   mz =  -0.9999963641166687
+//branch=up   B_ext(Oe) =  -3800   mz =  -0.9999961853027344
+//branch=up   B_ext(Oe) =  -3700   mz =  -0.9999960064888
+//branch=up   B_ext(Oe) =  -3600   mz =  -0.9999959468841553
+//branch=up   B_ext(Oe) =  -3500   mz =  -0.9999958276748657
+//branch=up   B_ext(Oe) =  -3399.9999999999995   mz =  -0.9999955296516418
+//branch=up   B_ext(Oe) =  -3299.9999999999995   mz =  -0.9999952912330627
+//branch=up   B_ext(Oe) =  -3200   mz =  -0.9999950528144836
+//branch=up   B_ext(Oe) =  -3100   mz =  -0.9999947547912598
+//branch=up   B_ext(Oe) =  -3000   mz =  -0.9999944567680359
+//branch=up   B_ext(Oe) =  -2900.0000000000005   mz =  -0.9999942779541016
+//branch=up   B_ext(Oe) =  -2800.0000000000005   mz =  -0.9999938607215881
+//branch=up   B_ext(Oe) =  -2700   mz =  -0.9999934434890747
+//branch=up   B_ext(Oe) =  -2600   mz =  -0.9999929666519165
+//branch=up   B_ext(Oe) =  -2500   mz =  -0.9999923706054688
+//branch=up   B_ext(Oe) =  -2400   mz =  -0.999991774559021
+//branch=up   B_ext(Oe) =  -2300   mz =  -0.9999909400939941
+//branch=up   B_ext(Oe) =  -2199.9999999999995   mz =  -0.9999901056289673
+//branch=up   B_ext(Oe) =  -2100   mz =  -0.9999889135360718
+//branch=up   B_ext(Oe) =  -2000   mz =  -0.9999873638153076
+//branch=up   B_ext(Oe) =  -1900   mz =  -0.99998539686203
+//branch=up   B_ext(Oe) =  -1800   mz =  -0.999982476234436
+//branch=up   B_ext(Oe) =  -1699.9999999999998   mz =  -0.9999773502349854
+//branch=up   B_ext(Oe) =  -1599.9999999999998   mz =  -0.9999656081199646
+//branch=up   B_ext(Oe) =  -1499.9999999999998   mz =  -0.9999077320098877
+//branch=up   B_ext(Oe) =  -1400.0000000000002   mz =  -0.9998567700386047
+//branch=up   B_ext(Oe) =  -1300   mz =  -0.9998024702072144
+//branch=up   B_ext(Oe) =  -1200   mz =  -0.99968022108078
+//branch=up   B_ext(Oe) =  -1099.9999999999998   mz =  -0.8263571858406067
+//branch=up   B_ext(Oe) =  -999.9999999999998   mz =  -0.764124870300293
+//branch=up   B_ext(Oe) =  -899.9999999999997   mz =  -0.6996926069259644
+//branch=up   B_ext(Oe) =  -800.0000000000001   mz =  -0.5665671229362488
+//branch=up   B_ext(Oe) =  -700.0000000000001   mz =  -0.5020534992218018
+//branch=up   B_ext(Oe) =  -600   mz =  -0.43631720542907715
+//branch=up   B_ext(Oe) =  -499.9999999999999   mz =  -0.3693608045578003
+//branch=up   B_ext(Oe) =  -399.9999999999998   mz =  -0.30115681886672974
+//branch=up   B_ext(Oe) =  -299.9999999999997   mz =  -0.2316601425409317
+//branch=up   B_ext(Oe) =  -200.00000000000017   mz =  -0.1608068346977234
+//branch=up   B_ext(Oe) =  -100.00000000000009   mz =  -0.08842604607343674
+//branch=up   B_ext(Oe) =  0   mz =  -0.012688018381595612
+//branch=up   B_ext(Oe) =  100.00000000000009   mz =  0.07216188311576843
+//branch=up   B_ext(Oe) =  200.00000000000017   mz =  0.14463579654693604
+//branch=up   B_ext(Oe) =  300.0000000000003   mz =  0.21565032005310059
+//branch=up   B_ext(Oe) =  400.00000000000034   mz =  0.28537890315055847
+//branch=up   B_ext(Oe) =  500.00000000000045   mz =  0.3538896441459656
+//branch=up   B_ext(Oe) =  600.0000000000006   mz =  0.4212353229522705
+//branch=up   B_ext(Oe) =  700.0000000000006   mz =  0.4874536395072937
+//branch=up   B_ext(Oe) =  799.9999999999995   mz =  0.552558958530426
+//branch=up   B_ext(Oe) =  899.9999999999997   mz =  0.6165352463722229
+//branch=up   B_ext(Oe) =  999.9999999999998   mz =  0.6793409585952759
+//branch=up   B_ext(Oe) =  1099.9999999999998   mz =  0.7410287261009216
+//branch=up   B_ext(Oe) =  1200   mz =  0.8103893995285034
+//branch=up   B_ext(Oe) =  1300   mz =  0.8663618564605713
+//branch=up   B_ext(Oe) =  1400.0000000000002   mz =  0.919039249420166
+//branch=up   B_ext(Oe) =  1500.0000000000002   mz =  0.9669776558876038
+//branch=up   B_ext(Oe) =  1600.0000000000002   mz =  0.9999656677246094
+//branch=up   B_ext(Oe) =  1700.0000000000005   mz =  0.9999774098396301
+//branch=up   B_ext(Oe) =  1800.0000000000005   mz =  0.999982476234436
+//branch=up   B_ext(Oe) =  1900.0000000000007   mz =  0.9999854564666748
+//branch=up   B_ext(Oe) =  2000.0000000000007   mz =  0.9999874830245972
+//branch=up   B_ext(Oe) =  2099.9999999999995   mz =  0.9999889135360718
+//branch=up   B_ext(Oe) =  2199.9999999999995   mz =  0.9999901056289673
+//branch=up   B_ext(Oe) =  2300   mz =  0.9999909400939941
+//branch=up   B_ext(Oe) =  2400   mz =  0.999991774559021
+//branch=up   B_ext(Oe) =  2500   mz =  0.9999924302101135
+//branch=up   B_ext(Oe) =  2600   mz =  0.9999929070472717
+//branch=up   B_ext(Oe) =  2700   mz =  0.9999934434890747
+//branch=up   B_ext(Oe) =  2800.0000000000005   mz =  0.9999938011169434
+//branch=up   B_ext(Oe) =  2900.0000000000005   mz =  0.9999942779541016
+//branch=up   B_ext(Oe) =  3000.0000000000005   mz =  0.9999945163726807
+//branch=up   B_ext(Oe) =  3100.0000000000005   mz =  0.9999947547912598
+//branch=up   B_ext(Oe) =  3200.0000000000005   mz =  0.9999950528144836
+//branch=up   B_ext(Oe) =  3300.000000000001   mz =  0.9999952912330627
+//branch=up   B_ext(Oe) =  3399.9999999999995   mz =  0.9999955296516418
+//branch=up   B_ext(Oe) =  3500   mz =  0.9999957084655762
+//branch=up   B_ext(Oe) =  3600   mz =  0.9999959468841553
+//branch=up   B_ext(Oe) =  3700   mz =  0.9999960660934448
+//branch=up   B_ext(Oe) =  3800   mz =  0.9999961853027344
+//branch=up   B_ext(Oe) =  3900   mz =  0.9999963641166687
+//branch=up   B_ext(Oe) =  4000   mz =  0.9999964833259583
+//branch=up   B_ext(Oe) =  4100   mz =  0.999996542930603
+//branch=up   B_ext(Oe) =  4200   mz =  0.9999967813491821
+//branch=up   B_ext(Oe) =  4300.000000000001   mz =  0.9999969601631165
+//branch=up   B_ext(Oe) =  4400.000000000001   mz =  0.9999970197677612
+//branch=up   B_ext(Oe) =  4500.000000000001   mz =  0.999997079372406
+//branch=up   B_ext(Oe) =  4600   mz =  0.9999971389770508
+//branch=up   B_ext(Oe) =  4700   mz =  0.9999971985816956
+//branch=up   B_ext(Oe) =  4800   mz =  0.9999973773956299
+//branch=up   B_ext(Oe) =  4900   mz =  0.9999973773956299
+//branch=up   B_ext(Oe) =  5000   mz =  0.9999974370002747
+for i := 1; i <= Nsteps; i++ {
+	Bz := Bend - i*dB
+	B_ext = vector(0, 0, Bz)
+	Relax()
+	TableSave()
+	print("branch=down B_ext(Oe) = ", Bz*1e4, "  mz = ", m.comp(2).average())
+}
+//branch=down B_ext(Oe) =  4900   mz =  0.9999973773956299
+//branch=down B_ext(Oe) =  4800   mz =  0.9999973773956299
+//branch=down B_ext(Oe) =  4700   mz =  0.9999972581863403
+//branch=down B_ext(Oe) =  4600   mz =  0.9999971389770508
+//branch=down B_ext(Oe) =  4500   mz =  0.9999971389770508
+//branch=down B_ext(Oe) =  4400   mz =  0.9999969601631165
+//branch=down B_ext(Oe) =  4300   mz =  0.9999969601631165
+//branch=down B_ext(Oe) =  4200   mz =  0.9999966621398926
+//branch=down B_ext(Oe) =  4100   mz =  0.9999966025352478
+//branch=down B_ext(Oe) =  4000   mz =  0.9999964833259583
+//branch=down B_ext(Oe) =  3900   mz =  0.9999963641166687
+//branch=down B_ext(Oe) =  3800   mz =  0.9999961853027344
+//branch=down B_ext(Oe) =  3700   mz =  0.9999960660934448
+//branch=down B_ext(Oe) =  3600   mz =  0.9999959468841553
+//branch=down B_ext(Oe) =  3500   mz =  0.9999957084655762
+//branch=down B_ext(Oe) =  3399.9999999999995   mz =  0.9999954700469971
+//branch=down B_ext(Oe) =  3299.9999999999995   mz =  0.9999952912330627
+//branch=down B_ext(Oe) =  3200   mz =  0.9999950528144836
+//branch=down B_ext(Oe) =  3100   mz =  0.9999947547912598
+//branch=down B_ext(Oe) =  3000   mz =  0.9999944567680359
+//branch=down B_ext(Oe) =  2900.0000000000005   mz =  0.9999942779541016
+//branch=down B_ext(Oe) =  2800.0000000000005   mz =  0.9999938011169434
+//branch=down B_ext(Oe) =  2700   mz =  0.9999934434890747
+//branch=down B_ext(Oe) =  2600   mz =  0.9999929070472717
+//branch=down B_ext(Oe) =  2500   mz =  0.999992311000824
+//branch=down B_ext(Oe) =  2400   mz =  0.999991774559021
+//branch=down B_ext(Oe) =  2300   mz =  0.9999910593032837
+//branch=down B_ext(Oe) =  2199.9999999999995   mz =  0.9999901056289673
+//branch=down B_ext(Oe) =  2100   mz =  0.9999889135360718
+//branch=down B_ext(Oe) =  2000   mz =  0.9999874830245972
+//branch=down B_ext(Oe) =  1900   mz =  0.99998539686203
+//branch=down B_ext(Oe) =  1800   mz =  0.999982476234436
+//branch=down B_ext(Oe) =  1699.9999999999998   mz =  0.9999773502349854
+//branch=down B_ext(Oe) =  1599.9999999999998   mz =  0.9999656081199646
+//branch=down B_ext(Oe) =  1499.9999999999998   mz =  0.9999077916145325
+//branch=down B_ext(Oe) =  1400.0000000000002   mz =  0.9998563528060913
+//branch=down B_ext(Oe) =  1300   mz =  0.9998042583465576
+//branch=down B_ext(Oe) =  1200   mz =  0.9996877312660217
+//branch=down B_ext(Oe) =  1099.9999999999998   mz =  0.8263709545135498
+//branch=down B_ext(Oe) =  999.9999999999998   mz =  0.7641120553016663
+//branch=down B_ext(Oe) =  899.9999999999997   mz =  0.6994922161102295
+//branch=down B_ext(Oe) =  800.0000000000001   mz =  0.5665671825408936
+//branch=down B_ext(Oe) =  700.0000000000001   mz =  0.5020531415939331
+//branch=down B_ext(Oe) =  600   mz =  0.43631711602211
+//branch=down B_ext(Oe) =  499.9999999999999   mz =  0.36936062574386597
+//branch=down B_ext(Oe) =  399.9999999999998   mz =  0.30115675926208496
+//branch=down B_ext(Oe) =  299.9999999999997   mz =  0.2316601723432541
+//branch=down B_ext(Oe) =  200.00000000000017   mz =  0.16080684959888458
+//branch=down B_ext(Oe) =  100.00000000000009   mz =  0.08842598646879196
+//branch=down B_ext(Oe) =  0   mz =  0.012688030488789082
+//branch=down B_ext(Oe) =  -100.00000000000009   mz =  -0.07216186821460724
+//branch=down B_ext(Oe) =  -200.00000000000017   mz =  -0.14463578164577484
+//branch=down B_ext(Oe) =  -300.0000000000003   mz =  -0.21565039455890656
+//branch=down B_ext(Oe) =  -400.00000000000034   mz =  -0.2853788435459137
+//branch=down B_ext(Oe) =  -500.00000000000045   mz =  -0.3538896441459656
+//branch=down B_ext(Oe) =  -600.0000000000006   mz =  -0.4212353527545929
+//branch=down B_ext(Oe) =  -700.0000000000006   mz =  -0.48745352029800415
+//branch=down B_ext(Oe) =  -799.9999999999995   mz =  -0.5525590181350708
+//branch=down B_ext(Oe) =  -899.9999999999997   mz =  -0.6165351867675781
+//branch=down B_ext(Oe) =  -999.9999999999998   mz =  -0.6793410778045654
+//branch=down B_ext(Oe) =  -1099.9999999999998   mz =  -0.7410284876823425
+//branch=down B_ext(Oe) =  -1200   mz =  -0.8103893399238586
+//branch=down B_ext(Oe) =  -1300   mz =  -0.8663614988327026
+//branch=down B_ext(Oe) =  -1400.0000000000002   mz =  -0.9190375804901123
+//branch=down B_ext(Oe) =  -1500.0000000000002   mz =  -0.9669711589813232
+//branch=down B_ext(Oe) =  -1600.0000000000002   mz =  -0.9999656081199646
+//branch=down B_ext(Oe) =  -1700.0000000000005   mz =  -0.9999773502349854
+//branch=down B_ext(Oe) =  -1800.0000000000005   mz =  -0.999982476234436
+//branch=down B_ext(Oe) =  -1900.0000000000007   mz =  -0.99998539686203
+//branch=down B_ext(Oe) =  -2000.0000000000007   mz =  -0.9999874830245972
+//branch=down B_ext(Oe) =  -2099.9999999999995   mz =  -0.9999889135360718
+//branch=down B_ext(Oe) =  -2199.9999999999995   mz =  -0.9999901056289673
+//branch=down B_ext(Oe) =  -2300   mz =  -0.9999909400939941
+//branch=down B_ext(Oe) =  -2400   mz =  -0.999991774559021
+//branch=down B_ext(Oe) =  -2500   mz =  -0.9999923706054688
+//branch=down B_ext(Oe) =  -2600   mz =  -0.9999929070472717
+//branch=down B_ext(Oe) =  -2700   mz =  -0.9999934434890747
+//branch=down B_ext(Oe) =  -2800.0000000000005   mz =  -0.9999938011169434
+//branch=down B_ext(Oe) =  -2900.0000000000005   mz =  -0.9999942779541016
+//branch=down B_ext(Oe) =  -3000.0000000000005   mz =  -0.9999944567680359
+//branch=down B_ext(Oe) =  -3100.0000000000005   mz =  -0.9999947547912598
+//branch=down B_ext(Oe) =  -3200.0000000000005   mz =  -0.9999950528144836
+//branch=down B_ext(Oe) =  -3300.000000000001   mz =  -0.9999952912330627
+//branch=down B_ext(Oe) =  -3399.9999999999995   mz =  -0.9999954700469971
+//branch=down B_ext(Oe) =  -3500   mz =  -0.9999957084655762
+//branch=down B_ext(Oe) =  -3600   mz =  -0.9999959468841553
+//branch=down B_ext(Oe) =  -3700   mz =  -0.9999960064888
+//branch=down B_ext(Oe) =  -3800   mz =  -0.9999961853027344
+//branch=down B_ext(Oe) =  -3900   mz =  -0.9999963641166687
+//branch=down B_ext(Oe) =  -4000   mz =  -0.9999964833259583
+//branch=down B_ext(Oe) =  -4100   mz =  -0.9999966025352478
+//branch=down B_ext(Oe) =  -4200   mz =  -0.9999966621398926
+//branch=down B_ext(Oe) =  -4300.000000000001   mz =  -0.9999969601631165
+//branch=down B_ext(Oe) =  -4400.000000000001   mz =  -0.9999969601631165
+//branch=down B_ext(Oe) =  -4500.000000000001   mz =  -0.9999971389770508
+//branch=down B_ext(Oe) =  -4600   mz =  -0.9999971389770508
+//branch=down B_ext(Oe) =  -4700   mz =  -0.9999972581863403
+//branch=down B_ext(Oe) =  -4800   mz =  -0.9999973773956299
+//branch=down B_ext(Oe) =  -4900   mz =  -0.9999973177909851
+//branch=down B_ext(Oe) =  -5000   mz =  -0.9999974370002747
+//********************************************************************//
+//Please cite the following references, relevant for your simulation. //
+//See bibtex file in output folder for justification.                 //
+//********************************************************************//
+//   * Vansteenkiste et al., AIP Adv. 4, 107133 (2014).
+//   * Mulkers et al., Phys. Rev. B 95, 144401 (2017).
